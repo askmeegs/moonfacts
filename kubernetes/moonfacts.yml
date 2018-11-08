@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moonfacts
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: moonfacts
+        version: v1
+    spec:
+      containers:
+      - name: moonfacts
+        image:  gcr.io/mokeefe-sandbox/moonfacts:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2345
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moonfacts
+spec:
+  type: ClusterIP
+  selector:
+    app: moonfacts
+  ports:
+  - port: 80
+    targetPort: 2345
+    name: http
